@@ -17,7 +17,7 @@ GET http://localhost:3000/auth?email=test@gmail.com
 DELETE http://localhost:3000/auth/62144124
 
 ### Update a user by id
-PATCH http://localhost:3000/auth/241424
+PATCH http://localhost:3000/auth/4
 Content-Type: application/json
 
 {
