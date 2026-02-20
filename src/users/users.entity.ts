@@ -1,5 +1,5 @@
 import { AfterInsert, AfterRemove, AfterUpdate, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { Exclude } from 'class-transformer';
+// import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -10,7 +10,7 @@ export class User {
   email: string;
 
   @Column() 
-  @Exclude() // Exclude the password field from being returned in API responses
+  // @Exclude() // Exclude the password field from being returned in API responses
   password: string;
 
   @AfterInsert()
