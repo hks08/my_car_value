@@ -3,9 +3,24 @@ POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-    "email": "test@gmail.com",
+    "email": "kitoy3@gmail.com",
     "password": "password12345678"
 }
+
+### Sign in existing user
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+    "email": "kitoy2@gmail.com",
+    "password": "password12345678"
+}
+
+### Get the currently signed in user
+GET http://localhost:3000/auth/whoami
+
+### Sign out the currently signed in user
+POST http://localhost:3000/auth/signout
 
 ### Find a particular user by id
 GET http://localhost:3000/auth/4
@@ -23,3 +38,9 @@ Content-Type: application/json
 {
     "email": "updated2@gmail.com"
 }
+
+### Set a color in the session ###
+GET http://localhost:3000/auth/colors/violet
+
+### Get the color from the session ###
+GET http://localhost:3000/auth/colors
