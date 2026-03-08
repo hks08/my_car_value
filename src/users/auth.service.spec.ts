@@ -11,10 +11,20 @@ describe('AuthService', () => {
 
     beforeEach(async () => {
         // Create a fake copy of the users service
+        const users: User[] = [];
         fakeUsersService = {
-            find: () => Promise.resolve([]),
-            create: (email: string, password: string) => 
-                Promise.resolve({ id: 1, email, password } as User)
+            // find: () => Promise.resolve([]),
+            // create: (email: string, password: string) => 
+            //     Promise.resolve({ id: 1, email, password } as User)
+            find: (email: string) => {
+                const filteredUsers = users.filter(user => user.email === email);
+                return Promise.resolve(filteredUsers);
+            },
+            create: (email: string, password: string) => {
+                const user = { id: Math.floor(Math.random() * 999999), email, password } as User;
+                users.push(user);
+                return Promise.resolve(user);
+            }
         };
         
         const module = await Test.createTestingModule({
@@ -58,4 +68,29 @@ describe('AuthService', () => {
             service.signin('test@gmail.com', 'test'),
         ).rejects.toThrow(NotFoundException);
     });
+
+    it('throws if an invalid password is provided', async () => {
+        fakeUsersService.find = () =>
+            Promise.resolve([
+                { id: 1, email: 'test@gmail.com', password: 'hashedpassword' } as User
+            ]);
+        await expect(
+            service.signin('test@gmail.com', 'wrongpassword')
+        ).rejects.toThrow(BadRequestException);
+    });
+
+    it('returns a user if correct password is provided', async () => {
+        // fakeUsersService.find = () =>
+        //     Promise.resolve([
+        //         { email: 'test@gmail.com', password: 'ec453ce9bb9e54dc.5e7c938694bb59e65635456b967acd2e3d3d6712b991bf8142762c0857cdb4f9' } as User
+        //     ]);
+        await service.signup('test@gmail.com', 'test');
+
+        const user = await service.signin('test@gmail.com', 'test');
+        expect(user).toBeDefined();
+        // const user = await service.signup('test@gmail.com', 'test');
+        // console.log(user);
+    });
+
+
 });
